@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS habilidades (
 
 CREATE INDEX IF NOT EXISTS idx_habilidades_usuario ON habilidades(usuario_id);
 CREATE INDEX IF NOT EXISTS idx_habilidades_categoria ON habilidades(categoria);
+-- Evita duplicados cuando sql/seed.sql se ejecuta más de una vez (p. ej. en cada build de despliegue).
+CREATE UNIQUE INDEX IF NOT EXISTS idx_habilidades_usuario_nombre_unico ON habilidades(usuario_id, nombre);
 
 CREATE TABLE IF NOT EXISTS solicitudes (
   id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),

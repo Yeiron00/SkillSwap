@@ -16,4 +16,5 @@ INSERT INTO habilidades (usuario_id, nombre, descripcion, categoria, nivel, tipo
   ('4ccfbca8-2e51-41b8-be73-9b839b6712a8', 'Matemáticas avanzadas', 'Experto en matemáticas y gráficas en el plano y en 3 dimensiones.', 'Matemáticas', 'Avanzado', 'ofrecida'),
   ('c3e9bb8c-8eab-40b4-b99d-6dfc25aa8b99', 'Illustrator y Photoshop', 'Ilustrador y Photoshop: logos, flyers y composición visual.', 'Arte', 'Avanzado', 'ofrecida'),
   ('d38e911f-e271-47ab-b4aa-70c8d79df3b9', 'Python desde cero', 'Te enseño la base de Python con ejercicios prácticos y proyectos guiados.', 'Informática', 'Principiante', 'ofrecida'),
-  ('d38e911f-e271-47ab-b4aa-70c8d79df3b9', 'Excel para el trabajo', 'Fórmulas, tablas dinámicas y automatización básica de reportes en Excel.', 'Informática', 'Intermedio', 'ofrecida');
+  ('d38e911f-e271-47ab-b4aa-70c8d79df3b9', 'Excel para el trabajo', 'Fórmulas, tablas dinámicas y automatización básica de reportes en Excel.', 'Informática', 'Intermedio', 'ofrecida')
+ON CONFLICT (usuario_id, nombre) DO NOTHING;
