@@ -7,5 +7,5 @@
   const esLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
   window.SKILLSWAP_API_BASE = esLocal
     ? "http://localhost:4000/api"
-    : "https://REEMPLAZA-CON-TU-BACKEND.onrender.com/api";
+    : "https://skillswap-qdfo.onrender.com/api";
 })();
