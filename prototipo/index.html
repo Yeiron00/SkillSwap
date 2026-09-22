@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillSwap · Prototipo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="auth-screen" class="screen">
+  <div class="auth-wrap">
+    <div class="auth-brand">
+      <h1>SkillSwap</h1>
+      <p>Intercambia lo que sabes por lo que quieres aprender. Sin dinero de por medio.</p>
+      <ul class="auth-points">
+        <li>Publica tus habilidades</li>
+        <li>Busca lo que quieres aprender</li>
+        <li>Conecta, intercambia y califica</li>
+      </ul>
+    </div>
+    <div class="auth-card">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="login">Iniciar sesión</button>
+        <button class="tab-btn" data-tab="register">Registrarse</button>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <label>Correo electrónico</label>
+        <input type="email" id="login-email" placeholder="tucorreo@ejemplo.com" required>
+        <label>Contraseña</label>
+        <input type="password" id="login-password" placeholder="••••••••" required>
+        <button type="submit" class="btn-primary">Ingresar</button>
+        <p class="hint">Prueba con: laura@skillswap.co / 123456</p>
+      </form>
+
+      <form id="register-form" class="auth-form hidden">
+        <label>Nombre</label>
+        <input type="text" id="reg-nombre" placeholder="Daniel" required>
+        <label>Apellido</label>
+        <input type="text" id="reg-apellido" placeholder="Galván" required>
+        <label>Ciudad</label>
+        <input type="text" id="reg-city" placeholder="Bogotá, Colombia" required>
+        <label>Correo electrónico</label>
+        <input type="email" id="reg-email" placeholder="tucorreo@ejemplo.com" required>
+        <label>Contraseña</label>
+        <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" minlength="6" required>
+        <button type="submit" class="btn-primary">Crear cuenta</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="app-screen" class="screen hidden">
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="logo">SkillSwap</span>
+      <nav class="nav-links">
+        <button class="nav-link active" data-view="explore">Explorar</button>
+        <button class="nav-link" data-view="requests">Solicitudes<span id="req-badge" class="badge hidden">0</span></button>
+        <button class="nav-link" data-view="messages">Mensajes<span id="msg-badge" class="badge hidden">0</span></button>
+        <button class="nav-link" data-view="publish">Publicar</button>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <div id="user-avatar" class="avatar" data-view="profile"></div>
+      <button id="logout-btn" class="btn-text">Salir</button>
+    </div>
+  </header>
+
+  <main id="main-content"></main>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
