@@ -111,14 +111,59 @@ en_curso  → cancelada_mutuo | cancelada_incumplimiento
 - Consultas parametrizadas (`$1, $2...`) en toda la capa de datos — sin concatenación de strings, previene inyección SQL
 - Transacciones (`BEGIN/COMMIT/ROLLBACK` con `FOR UPDATE`) en las operaciones que cambian estado (aceptar solicitud, calificar) para evitar condiciones de carrera
 
-## 9. Despliegue
+## 9. Despliegue (obtener una URL pública real, gratis)
 
-Pensado para plataformas gratuitas mencionadas en el documento (Render, Vercel, Railway):
+El repositorio ya está inicializado con Git y tiene un commit inicial. Estos pasos usan **Render**, la opción más simple de las que menciona el documento (Vercel y Railway funcionan de forma equivalente).
 
-1. Crea una base de datos PostgreSQL gestionada (Render/Railway/Neon) y copia su `DATABASE_URL`.
-2. Despliega este directorio (`backend/`) como Web Service, con `npm install && npm run db:init` como build step y `npm start` como start command.
-3. Configura las variables de entorno del `.env` en el panel del proveedor.
-4. Actualiza `CORS_ORIGIN` con la URL pública del frontend desplegado.
+### 9.1 Subir el código a GitHub
+
+```bash
+# Desde la carpeta SkillSwap/
+git remote add origin https://github.com/TU-USUARIO/skillswap.git
+git branch -M main
+git push -u origin main
+```
+
+(Crea antes el repositorio vacío en GitHub si no existe: github.com/new).
+
+### 9.2 Base de datos PostgreSQL (Render)
+
+1. En [render.com](https://render.com) (cuenta gratis) → **New +** → **PostgreSQL**.
+2. Nombre: `skillswap-db`, plan **Free**. Crear.
+3. Cuando esté lista, copia el **Internal Database URL** (lo usarás en el paso siguiente).
+
+### 9.3 Backend (Render Web Service)
+
+1. **New +** → **Web Service** → conecta tu repositorio de GitHub.
+2. **Root Directory**: `backend`
+3. **Build Command**: `npm install && npm run db:init -- --seed`
+4. **Start Command**: `npm start`
+5. Plan **Free**.
+6. En **Environment**, agrega las variables:
+   - `DATABASE_URL` → el Internal Database URL del paso 9.2
+   - `JWT_SECRET` → un valor largo y aleatorio (por ejemplo, generado con `openssl rand -hex 32`)
+   - `JWT_EXPIRES_IN` → `7d`
+   - `CORS_ORIGIN` → la URL del frontend (la tendrás en el paso 9.4; puedes poner `*` temporalmente y ajustarla después)
+7. Crear. Cuando termine el deploy, tendrás una URL como `https://skillswap-backend.onrender.com`. Verifica con `https://skillswap-backend.onrender.com/api/health`.
+
+### 9.4 Frontend (Render Static Site)
+
+1. Antes de desplegar, edita [`../prototipo/config.js`](../prototipo/config.js) y reemplaza la URL de ejemplo por la de tu backend real:
+   ```js
+   window.SKILLSWAP_API_BASE = "https://skillswap-backend.onrender.com/api";
+   ```
+   Haz commit y push de ese cambio.
+2. En Render: **New +** → **Static Site** → mismo repositorio.
+3. **Root Directory**: `prototipo`
+4. **Build Command**: (vacío, es HTML estático)
+5. **Publish Directory**: `.`
+6. Crear. Obtendrás una URL como `https://skillswap.onrender.com` — esa es la que puedes abrir desde cualquier navegador y compartir.
+
+### 9.5 Cerrar el círculo de CORS
+
+Vuelve al Web Service del backend (paso 9.3) y actualiza `CORS_ORIGIN` con la URL real del frontend obtenida en el paso 9.4 (sin `/` final). Guarda — Render redeploya automáticamente.
+
+> Nota: en el plan gratuito de Render, el backend "duerme" tras ~15 minutos sin uso y la primera petición tras la inactividad tarda unos segundos en responder. Es normal y no afecta la funcionalidad.
 
 ## 10. Modo demostración (sin instalar PostgreSQL)
 
