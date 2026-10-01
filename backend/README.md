@@ -10,6 +10,35 @@ API REST en Node.js + Express + PostgreSQL para el proyecto **SkillSwap**, sigui
 - **express-validator** — validación de entradas
 - **helmet + cors** — cabeceras de seguridad y control de origen
 
+## 0. Arquitectura MVC
+
+El código del backend sigue el patrón **Modelo-Vista-Controlador**, con una capa de rutas delgada que conecta todo:
+
+```
+src/
+  models/        Modelo      — acceso a datos (SQL puro vía `pg`), sin lógica HTTP ni de negocio
+  views/         Vista       — da forma a la respuesta JSON que ve el cliente (equivalente de
+                                "vista" en una API REST: no hay HTML, la "vista" es el JSON)
+  controllers/   Controlador — lógica de negocio: valida reglas, orquesta Modelo + Vista,
+                                arma la respuesta HTTP (status codes, errores)
+  routes/        Enrutamiento — mapea cada endpoint (verbo + path) a sus validadores
+                                (express-validator) y al método del controlador correspondiente
+  middleware/     auth (JWT), validación de entrada, manejo centralizado de errores
+  utils/          JWT, helpers transversales
+  db.js           conexión a PostgreSQL (pool de `pg`)
+  app.js          arma la aplicación Express y monta las rutas
+  server.js       punto de entrada (arranca el servidor HTTP)
+```
+
+**Un ejemplo completo del flujo**, para `POST /api/solicitudes/:id/aceptar`:
+
+1. **Ruta** ([requests.routes.js](src/routes/requests.routes.js)) valida que `:id` sea un UUID y delega en el controlador.
+2. **Controlador** ([solicitudes.controller.js](src/controllers/solicitudes.controller.js)) aplica las reglas de negocio: solo el destinatario puede aceptar, la solicitud debe estar `pendiente`; si todo es válido, le pide al **Modelo** que actualice el estado y cree el intercambio (en una transacción).
+3. **Modelo** ([Solicitud.model.js](src/models/Solicitud.model.js), [Intercambio.model.js](src/models/Intercambio.model.js)) ejecuta el SQL y devuelve las filas crudas de PostgreSQL.
+4. **Vista** ([solicitud.view.js](src/views/solicitud.view.js)) transforma esas filas (snake_case, con columnas internas) al JSON final que recibe el frontend (camelCase, sin datos sensibles).
+
+Cada modelo acepta un `executor` opcional (la conexión por defecto, o un `client` de transacción), lo que permite que varias operaciones de distintos modelos participen de una misma transacción `BEGIN/COMMIT/ROLLBACK` controlada por el controlador — ver `aceptar()` en `solicitudes.controller.js` o `calificar()` en `calificaciones.controller.js`.
+
 ## 1. Requisitos
 
 - Node.js 18+
