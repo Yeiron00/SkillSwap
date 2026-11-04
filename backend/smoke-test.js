@@ -56,6 +56,24 @@ async function main() {
   const tokenLaura = body.token;
   const lauraId = body.usuario.id;
 
+  // Chatbot de soporte (público, sin token)
+  r = await fetch(`${base}/soporte/mensaje`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ mensaje: "¿Cómo publico una habilidad?" })
+  });
+  assert.strictEqual(r.status, 200, "chatbot responde");
+  body = await j(r);
+  assert.strictEqual(body.tipo, "faq");
+  assert.ok(body.respuesta.includes("Publicar"), "la respuesta explica cómo publicar");
+  r = await fetch(`${base}/soporte/mensaje`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ mensaje: "   " })
+  });
+  assert.strictEqual(r.status, 400, "chatbot rechaza mensaje vacío");
+  r = await fetch(`${base}/soporte/sugerencias`);
+  assert.strictEqual(r.status, 200);
+  console.log("OK  chatbot de soporte responde y valida entrada");
+
   // Email duplicado -> 409
   r = await fetch(`${base}/auth/registro`, {
     method: "POST", headers: { "Content-Type": "application/json" },

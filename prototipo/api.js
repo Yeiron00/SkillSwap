@@ -75,5 +75,9 @@ const api = {
     apiFetch("/mensajes", { method: "POST", body: JSON.stringify({ destinatarioId, contenido }) }),
 
   // Calificaciones (RF-12)
-  calificar: (payload) => apiFetch("/calificaciones", { method: "POST", body: JSON.stringify(payload) })
+  calificar: (payload) => apiFetch("/calificaciones", { method: "POST", body: JSON.stringify(payload) }),
+
+  // Chatbot de soporte (público)
+  soporteSugerencias: () => apiFetch("/soporte/sugerencias"),
+  soporteMensaje: (mensaje) => apiFetch("/soporte/mensaje", { method: "POST", body: JSON.stringify({ mensaje }) })
 };

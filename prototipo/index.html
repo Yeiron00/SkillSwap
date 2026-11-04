@@ -2,8 +2,17 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>SkillSwap · Prototipo</title>
+<meta name="description" content="SkillSwap: intercambia habilidades y conocimientos con otros usuarios, sin dinero de por medio.">
+<meta name="theme-color" content="#1f9d6b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SkillSwap">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -73,8 +82,12 @@
 
 <div id="toast" class="toast hidden"></div>
 
+<button id="install-btn" class="install-btn hidden" type="button">Instalar app</button>
+
 <script src="config.js"></script>
 <script src="api.js"></script>
 <script src="app.js"></script>
+<script src="chatbot.js"></script>
+<script src="pwa.js"></script>
 </body>
 </html>
