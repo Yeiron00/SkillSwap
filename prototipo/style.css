@@ -124,6 +124,8 @@ body {
   display: flex; align-items: center; justify-content: center; padding: 0 3px;
 }
 .topbar-right { display: flex; align-items: center; gap: 14px; }
+.user-name { font-size: 14px; font-weight: 600; color: var(--gray); white-space: nowrap; }
+.publish-owner { margin: 0 0 16px; font-size: 13px; color: var(--gray); background: var(--green-light); padding: 10px 12px; border-radius: 8px; }
 .avatar {
   width: 36px; height: 36px; border-radius: 50%; background: var(--green);
   color: #fff; display: flex; align-items: center; justify-content: center;
@@ -298,6 +300,7 @@ body {
 
 @media (max-width: 720px) {
   .nav-links { gap: 0; }
+  .user-name { display: none; }
   .nav-link { padding: 8px 8px; font-size: 12px; }
   .messages-layout { grid-template-columns: 1fr; height: auto; }
   .conv-list { max-height: 200px; }
