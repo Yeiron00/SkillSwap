@@ -1,0 +1,16 @@
+{
+  "name": "skillswap-escritorio",
+  "version": "1.0.0",
+  "description": "SkillSwap como aplicación de escritorio (Electron)",
+  "main": "main.js",
+  "scripts": {
+    "start": "node iniciar.js",
+    "probar": "node iniciar.js --probar"
+  },
+  "author": "Yeiron Saray",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^33.4.11"
+  }
+}
