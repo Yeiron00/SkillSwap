@@ -8,6 +8,7 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "dev:demo": "node dev-inmemory.js",
+    "test:soporte": "node --test",
     "db:init": "node src/scripts/initDb.js"
   },
   "dependencies": {

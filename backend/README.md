@@ -113,6 +113,20 @@ Todas las rutas protegidas requieren el header `Authorization: Bearer <token>` o
 | RF-11 | `GET /api/mensajes/:usuarioId` | Historial con un usuario |
 | RF-11 | `POST /api/mensajes` | Enviar un mensaje |
 | RF-12 | `POST /api/calificaciones` | Calificar tras un intercambio completado |
+| — | `POST /api/soporte/mensaje` | Chatbot de soporte: responde una pregunta sobre el uso de la plataforma (público) |
+| — | `GET /api/soporte/sugerencias` | Preguntas sugeridas para iniciar el chat (público) |
+
+### Chatbot de soporte
+
+Asistente basado en reglas (sin servicios externos ni costo), siguiendo la arquitectura MVC: la base de conocimiento y la búsqueda viven en [`Soporte.model.js`](src/models/Soporte.model.js), [`soporte.controller.js`](src/controllers/soporte.controller.js) maneja la petición y [`soporte.view.js`](src/views/soporte.view.js) da forma al JSON. Normaliza el texto (minúsculas, sin tildes ni stopwords), puntúa cada pregunta frecuente por palabras clave —aceptando conjugaciones y frases con palabras intermedias— y devuelve la mejor respuesta más preguntas sugeridas; si no entiende, lo dice y ofrece opciones en vez de inventar. Para ampliar su conocimiento basta con añadir una entrada a `FAQS`. En el frontend se muestra como un widget flotante ([`chatbot.js`](../prototipo/chatbot.js)) disponible incluso sin iniciar sesión.
+
+```bash
+npm run test:soporte   # 27 pruebas del motor del chatbot (node:test, sin dependencias)
+```
+
+### App instalable (PWA)
+
+El frontend (`../prototipo`) es una **Progressive Web App**: tiene [`manifest.json`](../prototipo/manifest.json) (nombre, íconos, modo `standalone`, color de tema) y un [`service-worker.js`](../prototipo/service-worker.js) que cachea el esqueleto de la app (abre al instante y sin conexión; las llamadas a la API siempre van a la red y nunca se cachean datos de usuarios). Se instala desde el navegador como una app con su propio ícono y ventana: botón «Instalar app» / menú ⋮ → «Instalar aplicación» en Android y escritorio, y Compartir → «Añadir a pantalla de inicio» en iPhone. Si cambias los archivos del frontend, sube `CACHE_VERSION` en `service-worker.js` para invalidar la caché anterior.
 
 ## 7. Ciclo de vida de una solicitud / intercambio
 

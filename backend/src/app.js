@@ -12,6 +12,7 @@ const exchangesRoutes = require("./routes/exchanges.routes");
 const messagesRoutes = require("./routes/messages.routes");
 const ratingsRoutes = require("./routes/ratings.routes");
 const matchRoutes = require("./routes/match.routes");
+const supportRoutes = require("./routes/support.routes");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/intercambios", exchangesRoutes);
 app.use("/api/mensajes", messagesRoutes);
 app.use("/api/calificaciones", ratingsRoutes);
 app.use("/api/emparejamiento", matchRoutes);
+app.use("/api/soporte", supportRoutes);
 
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada." }));
 app.use(errorHandler);
