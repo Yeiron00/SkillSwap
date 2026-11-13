@@ -93,6 +93,9 @@ async function enterApp() {
   document.getElementById("auth-screen").classList.add("hidden");
   document.getElementById("app-screen").classList.remove("hidden");
   document.getElementById("user-avatar").textContent = initials(fullName(state.currentUser));
+  // Deja siempre visible con qué cuenta está abierta la sesión (la sesión se recuerda entre visitas).
+  document.getElementById("user-name").textContent = fullName(state.currentUser);
+  document.getElementById("user-avatar").title = `${fullName(state.currentUser)} · ${state.currentUser.email}`;
   state.view = "explore"; state.viewingUserId = null; state.activeConvUserId = null;
   document.querySelectorAll(".nav-link").forEach(b => b.classList.toggle("active", b.dataset.view === "explore"));
   await render();
@@ -512,6 +515,7 @@ function renderPublish(main) {
       <p>Comparte algo que sabes hacer y que otros quieran aprender.</p>
     </div>
     <div class="form-card">
+      <p class="publish-owner">Se publicará en el perfil de <strong id="publish-owner-name"></strong>. ¿No eres tú? Pulsa «Salir» e inicia sesión con tu cuenta.</p>
       <form id="publish-form">
         <label>Título de la habilidad</label>
         <input id="p-title" type="text" placeholder="Ej: Guitarra para principiantes" required>
@@ -531,6 +535,7 @@ function renderPublish(main) {
       </form>
     </div>
   `;
+  document.getElementById("publish-owner-name").textContent = fullName(state.currentUser);
   document.getElementById("publish-form").addEventListener("submit", async e => {
     e.preventDefault();
     const nombre = document.getElementById("p-title").value.trim();
@@ -539,7 +544,7 @@ function renderPublish(main) {
     const descripcion = document.getElementById("p-desc").value.trim();
     try {
       await api.publicarHabilidad({ nombre, categoria, nivel, descripcion });
-      toast("Habilidad publicada correctamente.");
+      toast(`Habilidad publicada en el perfil de ${fullName(state.currentUser)}.`);
       state.view = "profile"; state.viewingUserId = null;
       document.querySelectorAll(".nav-link").forEach(b => b.classList.remove("active"));
       render();

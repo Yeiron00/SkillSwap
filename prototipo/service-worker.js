@@ -3,7 +3,7 @@
 // - Llamadas a la API (otro origen): siempre a la red; nunca se cachean datos de usuarios.
 // Sube CACHE_VERSION cuando cambie la lista de archivos para invalidar la caché anterior.
 
-const CACHE_VERSION = "skillswap-v1";
+const CACHE_VERSION = "skillswap-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
